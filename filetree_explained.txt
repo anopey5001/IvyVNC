@@ -1,0 +1,15 @@
+app is for staging stuff will get cp to building
+and cfiles is pretty self explanatory 
+and the java files not having their own dir because they js too small
+and the the deps in the cfiles is where we take the code of our deps and put it there 
+and there must be no already compiled stuff
+
+
+and the basic build process should be like
+delete old stuff built/
+cp app into building
+compile java file and move output to building/app/(files).dex 
+compile c file and move output to building/app/lib/(abi)/(files).so
+do some magic zip stuff and zipalign stuff aapt
+take keystore from code and use that
+take apk mkdir built/ and move it there and move building to buil
