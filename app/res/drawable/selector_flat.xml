@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Borderless flat press-state used as a View's *foreground* (menu
+     button, per-card settings gear) so pressing it highlights without
+     covering whatever background is already there. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@color/key_ripple" />
+    <item android:drawable="@android:color/transparent" />
+</selector>

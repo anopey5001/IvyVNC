@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Flat row background for anything sitting directly on root_bg
+     (connection-list rows, settings rows) - a classic ListView-style
+     flat highlight while held, transparent otherwise, no card fill
+     and no ripple. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@color/key_ripple" />
+    <item android:drawable="@android:color/transparent" />
+</selector>

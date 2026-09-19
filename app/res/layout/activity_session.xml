@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/session_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/root_bg">
+
+    <SurfaceView
+        android:id="@+id/surface_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/status_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:layout_marginTop="14dp"
+        android:layout_marginStart="14dp"
+        android:text="Not connected"
+        android:textColor="@color/text_primary"
+        android:textSize="12sp"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:background="@drawable/bg_status_idle"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <!-- Off-screen EditText that exists only to capture soft-keyboard
+         input - toggled focused/hidden by the keyboard toolbar button.
+         Kept effectively invisible (1x1) rather than removed from the
+         layout so it can still hold IME focus. -->
+    <EditText
+        android:id="@+id/key_capture_input"
+        android:layout_width="1px"
+        android:layout_height="1px"
+        android:background="@android:color/transparent"
+        android:textColor="@android:color/transparent"
+        android:cursorVisible="false"
+        android:inputType="text|textNoSuggestions" />
+
+    <!-- The paged Termux-style toolbar is attached here at runtime
+         (see buildToolbar()) since its swipeable page container is a
+         custom interactive view, not something a static layout can
+         express. -->
+    <FrameLayout
+        android:id="@+id/toolbar_container"
+        android:layout_width="match_parent"
+        android:layout_height="94dp"
+        android:layout_gravity="bottom" />
+
+</FrameLayout>

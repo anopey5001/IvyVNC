@@ -1,1 +1,1 @@
-cool sigma tuff vnc app
+an android vnc app that relys on libvncclient

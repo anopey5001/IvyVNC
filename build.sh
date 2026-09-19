@@ -25,6 +25,7 @@ BUILT="$ROOT/built"
 
 # first thing to do is cp everything to building
 echo "== staging app/ =="
+rm -rf "$STAGING"
 mkdir -p "$STAGING"
 cp "$APP_SRC/AndroidManifest.xml" "$STAGING/"
 cp -r "$APP_SRC/res" "$STAGING/"
@@ -131,10 +132,10 @@ echo "built: $BUILDING/app/lib/$ABI/libivyvnc.so"
 # does NOT create a keystore or zipalign for you, so both of those are
 # handled explicitly below. zipalign comes from the `aapt` package (not
 # aapt2); keytool comes from openjdk-17, already required for javac.
-for tool in aapt2 zipalign javac keytool d8 apksigner; do
+for tool in aapt2 zipalign javac keytool d8 apksigner zip; do
     if ! command -v "$tool" >/dev/null 2>&1; then
         echo "Couldn't find '$tool' on PATH."
-        echo "Run: pkg install aapt2 aapt openjdk-17 d8 apksigner"
+        echo "Run: pkg install aapt2 aapt openjdk-17 d8 apksigner zip"
         exit 1
     fi
 done

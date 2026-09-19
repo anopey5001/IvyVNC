@@ -15,6 +15,7 @@
 
         <activity
             android:name=".MainActivity"
+            android:theme="@android:style/Theme.Holo.NoActionBar"
             android:exported="true">
 
             <intent-filter>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView android:id="@+id/key_esc" style="@style/ToolbarKey" android:text="ESC" />
+        <TextView android:id="@+id/key_kbd" style="@style/ToolbarKey" android:text="&#9000;" />
+        <TextView android:id="@+id/key_shift" style="@style/ToolbarKey" android:text="SHIFT" />
+        <TextView android:id="@+id/key_pgup" style="@style/ToolbarKey" android:text="PGUP" />
+        <TextView android:id="@+id/key_pgdn" style="@style/ToolbarKey" android:text="PGDN" />
+        <TextView android:id="@+id/key_home" style="@style/ToolbarKey" android:text="HOME" />
+        <TextView android:id="@+id/key_up" style="@style/ToolbarKey" android:text="&#8593;" />
+        <TextView android:id="@+id/key_end" style="@style/ToolbarKey" android:text="END" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView android:id="@+id/key_ctrl" style="@style/ToolbarKey" android:text="CTRL" />
+        <TextView android:id="@+id/key_super" style="@style/ToolbarKey" android:text="SUPER" />
+        <TextView android:id="@+id/key_alt" style="@style/ToolbarKey" android:text="ALT" />
+        <TextView android:id="@+id/key_delfwd" style="@style/ToolbarKey" android:text="&#8998;" />
+        <TextView android:id="@+id/key_menu" style="@style/ToolbarKey" android:text="&#9776;" />
+        <TextView android:id="@+id/key_left" style="@style/ToolbarKey" android:text="&#8592;" />
+        <TextView android:id="@+id/key_down" style="@style/ToolbarKey" android:text="&#8595;" />
+        <TextView android:id="@+id/key_right" style="@style/ToolbarKey" android:text="&#8594;" />
+    </LinearLayout>
+
+</LinearLayout>
