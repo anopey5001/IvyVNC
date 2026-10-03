@@ -1,0 +1,36 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: ""   # default "tools platform-tools" no longer exists; we install what we need below
+
+      - name: Install SDK / NDK packages
+        run: sdkmanager "platforms;android-34" "build-tools;34.0.0" "ndk;26.2.11394342"
+
+      - name: Build (debug-signed)
+        run: |
+          export NDK="$ANDROID_HOME/ndk/26.2.11394342"
+          export ANDROID_JAR="$ANDROID_HOME/platforms/android-34/android.jar"
+          export PATH="$ANDROID_HOME/build-tools/34.0.0:$PATH"
+          bash build.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: IvyVNC-debug
+          path: built/IvyVNC.apk
