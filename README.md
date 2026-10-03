@@ -1,28 +1,57 @@
 # IvyVNC
 
-A lightweight native VNC viewer for Android, built on
-[LibVNCClient](https://github.com/LibVNC/libvncserver) (vendored in
-`app/src/main/cpp/libvncclient`).
+A lightweight VNC viewer for Android, written in plain Java with a native
+[LibVNCClient](https://github.com/LibVNC/libvncserver) core
+
+[![Build](https://github.com/anopey5001/IvyVNC/actions/workflows/build.yml/badge.svg)](https://github.com/anopey5001/IvyVNC/actions/workflows/build.yml)
+[![License: GPL v2+](https://img.shields.io/badge/license-GPL--2.0--or--later-blue.svg)](LICENSE)
+
+## Features
+
+- Saved connection profiles (add, edit, view details)
+- On-screen toolbar with main keys, function keys, Ctrl/Alt modifiers and
+  your own custom key buttons
+- Touch controls with adjustable mouse sensitivity and two-finger scrolling
+- Display options: Full Color / 256 Colors / Grayscale, Fit / Stretch / 1:1
+  scaling, fast or smooth rendering
+- System, dark or light theme
+- Keep-screen-awake option and local Delete→Backspace remap
+
+## Install
+
+Grab the latest APK from the
+[Releases page](https://github.com/anopey5001/IvyVNC/releases) and install it.
+
+- Requires **Android 10 (API 29)** or newer
+- Built for **arm64-v8a** devices
+- Each release includes a `.sha256` file so you can verify the download
+
+## Security note
+
+This build is compiled **without TLS/OpenSSL/GnuTLS**, so it speaks plain VNC
+(VNC password auth only). Traffic is not encrypted. Use it over a trusted
+network, a VPN (e.g. WireGuard/Tailscale), or an SSH tunnel.
 
 ## Building
 
-Requirements: JDK 17, Android SDK (platform 34, build-tools), NDK 26.3.11579264, CMake 3.22.1.
+Everything is driven by `build.sh`. It cross-compiles LibVNCClient and the JNI
+bridge with the NDK, then packages, aligns and signs the APK with the Android
+build-tools.
 
-    gradle assembleRelease      # or ./gradlew if you add the Gradle wrapper
-    gradle assembleDebug
+**Requirements:** Android NDK, an `android.jar` for API 34, CMake, JDK 17, and
+the build-tools (`aapt2`, `zipalign`, `d8`, `apksigner`) plus `zip`.
 
-Release builds are unsigned; F-Droid signs them itself.
-
-`tools/termux-build.sh` is the original on-device (Termux) build script, kept for
-building without Gradle. It signs with a throwaway debug key generated into `keystore/`.
-
-## Notes
-
-- Only permission: `INTERNET`.
-- VNC passwords are saved in the app's private storage in plain text and the
-  VNC protocol is unencrypted by default — use a trusted network, VPN or SSH tunnel.
-- Backups are disabled (`allowBackup=false`) because of the stored passwords.
+```bash
+export NDK=/path/to/android-ndk
+export ANDROID_JAR=/path/to/platforms/android-34/android.jar
+bash build.sh
+# -> built/IvyVNC.apk  (signed with an auto-generated debug key)
+```
 
 ## License
 
-GPL-2.0-or-later (see `LICENSE`), as required by the bundled LibVNCClient.
+IvyVNC is free software, licensed under the **GNU General Public License,
+version 2 or (at your option) any later version** — see [LICENSE](LICENSE).
+It statically links LibVNCClient, which is itself GPL-2.0-or-later, so the
+combined work must be GPL too.
+

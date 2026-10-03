@@ -1,13 +1,14 @@
-*.iml
-.gradle/
-/local.properties
-/.idea/
-.DS_Store
-/build/
-/app/build/
-/app/.cxx/
-/building/
-/built/
-*.keystore
+# build output
+building/
+built/
+*.apk
+*.aab
+
+# signing keys 
+*.p12
+*.pfx
 *.jks
-/tool/
+*.keystore
+keystore.properties
+
+

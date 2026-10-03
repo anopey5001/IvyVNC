@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.IvyVNC">
+
+    <uses-sdk android:minSdkVersion="29" android:targetSdkVersion="34" />
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:label="IvyVNC"
         android:icon="@mipmap/ic_launcher"
-        android:allowBackup="false"
+        android:debuggable="true"
+        android:allowBackup="true"
         android:supportsRtl="true">
 
         <activity

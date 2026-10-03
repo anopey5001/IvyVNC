@@ -14,13 +14,18 @@ set -e
 ABI=arm64-v8a
 API=29
 PACKAGE=com.IvyVNC
-KEYSTORE_PASS=android
+DEBUG_KEYSTORE_PASS=android
 
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+# Optional release-build knobs (all set by the GitHub Actions release workflow):
+#   RELEASE=1                 -> force android:debuggable="false"
+#   VERSION_NAME / VERSION_CODE -> stamped into the APK manifest
+#   KEYSTORE_FILE, KEYSTORE_PASS, KEY_ALIAS, [KEY_PASS], [KEYSTORE_TYPE]
+#                             -> sign with your release key instead of the debug one
+
+ROOT="$(cd "$(dirname "$0")" && pwd)"
 BUILDING="$ROOT/building"
-CPP="$ROOT/app/src/main/cpp"
-DEPS="$CPP"
-APP_SRC="$ROOT/app/src/main"
+DEPS="$ROOT/code/cfiles/deps"
+APP_SRC="$ROOT/app"
 STAGING="$BUILDING/app"
 BUILT="$ROOT/built"
 
@@ -28,10 +33,11 @@ BUILT="$ROOT/built"
 echo "== staging app/ =="
 rm -rf "$STAGING"
 mkdir -p "$STAGING"
-# The Gradle manifest has no package= attribute (namespace lives in
-# app/build.gradle), but aapt2 needs one, so inject it into the staged copy.
-sed "s#<manifest #<manifest package=\"$PACKAGE\" #" "$APP_SRC/AndroidManifest.xml" > "$STAGING/AndroidManifest.xml"
+cp "$APP_SRC/AndroidManifest.xml" "$STAGING/"
 cp -r "$APP_SRC/res" "$STAGING/"
+if [ "${RELEASE:-0}" = "1" ]; then
+    sed -i 's/android:debuggable="true"/android:debuggable="false"/' "$STAGING/AndroidManifest.xml"
+fi
 mkdir -p "$STAGING/assets"
 cp -rn "$APP_SRC/assets/." "$STAGING/assets/" 2>/dev/null || true
 # lib/ is populated further down by the JNI-bridge compile step -- not
@@ -119,8 +125,8 @@ fi
     -shared -fPIC \
     -I "$DEPS/libvncclient/include" \
     -I "$BUILDING/obj/libvncclient/include" \
-    "$CPP/jni_bridge.c" \
-    "$CPP/vnc_client.c" \
+    "$ROOT/code/cfiles/jni_bridge.c" \
+    "$ROOT/code/cfiles/vnc_client.c" \
     "$VNCCLIENT_A" \
     -llog -landroid -lz \
     -o "$BUILDING/app/lib/$ABI/libivyvnc.so"
@@ -159,6 +165,8 @@ aapt2 link \
     --java "$BUILDING/gen" \
     --min-sdk-version "$API" \
     --target-sdk-version 34 \
+    ${VERSION_CODE:+--version-code "$VERSION_CODE"} \
+    ${VERSION_NAME:+--version-name "$VERSION_NAME"} \
     "$BUILDING/compiled_res.zip"
 
 echo "== compiling java (javac) =="
@@ -168,7 +176,7 @@ javac \
     -source 8 -target 8 -nowarn \
     -bootclasspath "$ANDROID_JAR" -classpath "$ANDROID_JAR" \
     -d "$BUILDING/classes" \
-    "$ROOT/app/src/main/java/com/IvyVNC/MainActivity.java" \
+    "$ROOT/code/MainActivity.java" \
     "$BUILDING/gen/${PACKAGE//.//}/R.java"
 
 echo "== dexing (d8) =="
@@ -195,28 +203,43 @@ echo "== zipaligning (zipalign) =="
 zipalign -f -p 4 "$STAGING/unsigned.apk" "$STAGING/aligned.apk"
 
 echo "== signing (apksigner) =="
-mkdir -p "$ROOT/keystore" "$BUILT"
-# Debug keystore lives under keystore/ (git-ignored) so it persists across builds
+mkdir -p "$ROOT/code/keystore" "$BUILT"
+# Debug keystore lives under code/keystore/ so it persists across builds
 # instead of getting regenerated (and re-prompting) every run. Unlike
 # fornwall's old tool, the real apksigner won't create one on first use,
 # so we do that ourselves with keytool if it's not there yet.
-KEYSTORE="$ROOT/keystore/debug.keystore"
-KEY_ALIAS=androiddebugkey
-if [ ! -f "$KEYSTORE" ]; then
-    echo "no debug keystore yet, generating one at $KEYSTORE"
-    keytool -genkeypair -v \
-        -keystore "$KEYSTORE" \
-        -storepass "$KEYSTORE_PASS" \
-        -keypass "$KEYSTORE_PASS" \
-        -alias "$KEY_ALIAS" \
-        -keyalg RSA -keysize 2048 -validity 10000 \
-        -dname "CN=IvyVNC Debug,O=Android,C=US"
+if [ -n "${KEYSTORE_FILE:-}" ]; then
+    # Release signing (CI): key comes from the environment, never the repo.
+    : "${KEYSTORE_PASS:?KEYSTORE_FILE is set but KEYSTORE_PASS is not}"
+    : "${KEY_ALIAS:?KEYSTORE_FILE is set but KEY_ALIAS is not}"
+    KEYSTORE="$KEYSTORE_FILE"
+    STORE_PASS="$KEYSTORE_PASS"
+    KEY_PASS="${KEY_PASS:-$KEYSTORE_PASS}"   # PKCS12 usually uses one password
+    KS_TYPE_ARGS=(--ks-type "${KEYSTORE_TYPE:-PKCS12}")
+    echo "signing with release key ($KEYSTORE, alias $KEY_ALIAS)"
+else
+    KEYSTORE="$ROOT/code/keystore/debug.keystore"
+    KEY_ALIAS=androiddebugkey
+    STORE_PASS="$DEBUG_KEYSTORE_PASS"
+    KEY_PASS="$DEBUG_KEYSTORE_PASS"
+    KS_TYPE_ARGS=()
+    if [ ! -f "$KEYSTORE" ]; then
+        echo "no debug keystore yet, generating one at $KEYSTORE"
+        keytool -genkeypair -v \
+            -keystore "$KEYSTORE" \
+            -storepass "$STORE_PASS" \
+            -keypass "$KEY_PASS" \
+            -alias "$KEY_ALIAS" \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -dname "CN=IvyVNC Debug,O=Android,C=US"
+    fi
 fi
 
 apksigner sign \
     --ks "$KEYSTORE" \
-    --ks-pass "pass:$KEYSTORE_PASS" \
-    --key-pass "pass:$KEYSTORE_PASS" \
+    "${KS_TYPE_ARGS[@]}" \
+    --ks-pass "pass:$STORE_PASS" \
+    --key-pass "pass:$KEY_PASS" \
     --ks-key-alias "$KEY_ALIAS" \
     --out "$BUILT/IvyVNC.apk" \
     "$STAGING/aligned.apk"
