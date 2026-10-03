@@ -4,11 +4,16 @@ built/
 *.apk
 *.aab
 
-# signing keys 
+# signing keys -- NEVER commit these
 *.p12
 *.pfx
 *.jks
 *.keystore
 keystore.properties
 
-
+# editors / OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
