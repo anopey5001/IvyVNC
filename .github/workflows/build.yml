@@ -1,8 +1,7 @@
 name: Build
 
+# Checks that pull requests still build. Pushes to main are handled by release.yml.
 on:
-  push:
-    branches: [main]
   pull_request:
 
 jobs:
@@ -18,7 +17,7 @@ jobs:
 
       - uses: android-actions/setup-android@v3
         with:
-          packages: ""   # default "tools platform-tools" no longer exists; we install what we need below
+          packages: ""
 
       - name: Install SDK / NDK packages
         run: sdkmanager "platforms;android-34" "build-tools;34.0.0" "ndk;26.2.11394342"

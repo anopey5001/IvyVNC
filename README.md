@@ -3,7 +3,7 @@
 A lightweight VNC viewer for Android, written in plain Java with a native
 [LibVNCClient](https://github.com/LibVNC/libvncserver) core
 
-[![Build](https://github.com/anopey5001/IvyVNC/actions/workflows/build.yml/badge.svg)](https://github.com/anopey5001/IvyVNC/actions/workflows/build.yml)
+[![Build](https://github.com/anopey5001/IvyVNC/actions/workflows/release.yml/badge.svg)](https://github.com/anopey5001/IvyVNC/actions/workflows/release.yml)
 [![License: GPL v2+](https://img.shields.io/badge/license-GPL--2.0--or--later-blue.svg)](LICENSE)
 
 ## Features
@@ -21,10 +21,12 @@ A lightweight VNC viewer for Android, written in plain Java with a native
 
 Grab the latest APK from the
 [Releases page](https://github.com/anopey5001/IvyVNC/releases) and install it.
+Every push to `main` publishes a new release with a signed release APK
+(`IvyVNC-vX.Y.Z.apk`) and a debug APK (`...-debug.apk`).
 
 - Requires **Android 10 (API 29)** or newer
 - Built for **arm64-v8a** devices
-- Each release includes a `.sha256` file so you can verify the download
+- Each release includes a `SHA256SUMS.txt` file so you can verify the download
 
 ## Security note
 
