@@ -1,0 +1,11 @@
+IvyVNC is a lightweight, native VNC client for Android built on LibVNCClient.
+
+Features:
+• Save and manage multiple VNC connections
+• Touchpad-style mouse control with adjustable sensitivity, taps, scrolling and button holds
+• On-screen toolbar with main keys, function keys and user-defined custom keys
+• Configurable scaling and rendering options
+• Light and dark themes
+• No ads, no analytics, no tracking. The only permission used is INTERNET, to reach your VNC server.
+
+Note: VNC passwords are stored unencrypted in the app's private storage, and the VNC protocol itself is not encrypted. Use IvyVNC over a trusted network or through a VPN/SSH tunnel.

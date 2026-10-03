@@ -1,1 +1,0 @@
-an android vnc app that relys on libvncclient

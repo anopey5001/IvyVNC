@@ -1,0 +1,27 @@
+# Draft for https://gitlab.com/fdroid/fdroiddata  (file: metadata/com.IvyVNC.yml)
+# Check AuthorName before submitting.
+Categories:
+  - Connectivity
+  - System
+License: GPL-2.0-or-later
+AuthorName: Anopey
+SourceCode: https://github.com/anopey5001/IvyVNC
+IssueTracker: https://github.com/anopey5001/IvyVNC/issues
+
+AutoName: IvyVNC
+
+RepoType: git
+Repo: https://github.com/anopey5001/IvyVNC.git
+
+Builds:
+  - versionName: '1.0'
+    versionCode: 1
+    commit: v1.0
+    gradle:
+      - yes
+    ndk: r26d
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: '1.0'
+CurrentVersionCode: 1

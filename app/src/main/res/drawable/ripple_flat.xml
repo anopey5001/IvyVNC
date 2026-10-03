@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Borderless ripple used as a View's *foreground* (menu button,
+     per-card settings gear, settings-screen rows) so pressing it shows
+     a ripple without covering whatever background is already there. -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/key_ripple" />

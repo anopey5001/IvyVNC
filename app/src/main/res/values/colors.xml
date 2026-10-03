@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Accent stays identical in both themes - no separate accent
+         picker in Settings, just System/Dark/Light. -->
+    <color name="color_accent">#29b6f6</color>
+
+    <!-- Light-theme values (default / no night qualifier). The
+         values-night/colors.xml variant overrides the ones below that
+         actually change between themes. -->
+    <color name="root_bg">#f2f2f2</color>
+    <color name="toolbar_bg">#e4e4e4</color>
+    <color name="key_ripple">#3D000000</color> <!-- argb(60,0,0,0) -->
+    <color name="text_primary">#1a1a1a</color>
+    <color name="text_dim">#6a6a6a</color>
+    <color name="field_bg">#e8e8e8</color>
+    <color name="card_bg">#ffffff</color>
+
+    <!-- Fixed hint/pressed colors that don't vary with theme. -->
+    <color name="hint_text">#707070</color>
+    <color name="key_pressed">#7F7F7F</color>
+
+    <!-- Status-pill colors float over the live remote screen rather
+         than an app background, so they keep the same fixed semantic
+         colors (amber/green/red/idle-gray) regardless of theme. -->
+    <color name="status_idle">#BE282828</color>       <!-- argb(190,40,40,40) -->
+    <color name="status_connecting">#D2966900</color> <!-- argb(210,150,105,0) -->
+    <color name="status_connected">#C8147846</color>  <!-- argb(200,20,120,70) -->
+    <color name="status_error">#D2962819</color>      <!-- argb(210,150,40,30) -->
+</resources>
